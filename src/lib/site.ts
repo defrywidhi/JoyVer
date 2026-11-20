@@ -24,6 +24,14 @@ export const ORDER_STATUS_LABEL = {
 
 export type OrderStatus = keyof typeof ORDER_STATUS_LABEL;
 
+export function formatDateTime(iso: string): string {
+  return new Intl.DateTimeFormat("id-ID", {
+    dateStyle: "medium",
+    timeStyle: "short",
+    timeZone: "Asia/Jakarta",
+  }).format(new Date(iso));
+}
+
 export function formatRupiah(value: number): string {
   return new Intl.NumberFormat("id-ID", {
     style: "currency",

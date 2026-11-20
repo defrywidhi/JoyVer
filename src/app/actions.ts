@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { getAdminWa } from "@/lib/data";
+import { getClientIp, rateLimit, waitMessage } from "@/lib/rate-limit";
 import { buildWhatsAppUrl, normalizeWa } from "@/lib/site";
 import { createClient } from "@/lib/supabase/server";
 
@@ -34,6 +35,13 @@ export async function submitOrder(
   }
   if (details.length > 2000) {
     return { error: "Kebutuhan maksimal 2000 karakter.", values };
+  }
+
+  // Maksimal 5 order per IP dalam 10 menit.
+  const ip = await getClientIp();
+  const limited = rateLimit(`order:ip:${ip}`, 5, 10 * 60 * 1000);
+  if (!limited.ok) {
+    return { error: waitMessage(limited.retryAfterSec), values };
   }
 
   const supabase = await createClient();
