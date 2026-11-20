@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+/* Palet JoyVer, sesuai logo. Lihat PROJECT_BRIEF.md bagian 8. */
+@theme {
+  --color-deep-green: #0b6b3a;
+  --color-clover-green: #4caf50;
+  --color-golden-yellow: #ffc83d;
+  --color-off-white: #faf9f6;
+
+  /* Turunan untuk hover/latar lembut */
+  --color-deep-green-dark: #095430;
+  --color-clover-soft: #e8f5e9;
+  --color-golden-dark: #f0b420;
+  --color-ink: #12261b;
+
+  --font-heading: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 1.25rem;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 8px 30px -12px rgb(11 107 58 / 0.25);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-off-white);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+  color: var(--color-deep-green);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-golden-yellow);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
