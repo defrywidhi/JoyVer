@@ -32,6 +32,14 @@ export function formatRupiah(value: number): string {
   }).format(value);
 }
 
+/** Normalisasi nomor WA ke 62xxxxxxxxxx (sama dengan fungsi SQL normalize_wa). */
+export function normalizeWa(raw: string): string {
+  let d = raw.replace(/\D/g, "");
+  if (d.startsWith("0")) d = "62" + d.slice(1);
+  else if (d.startsWith("8")) d = "62" + d;
+  return d;
+}
+
 /** Buat tautan wa.me dengan pesan terisi. `wa` harus format 62xxxxxxxxxx. */
 export function buildWhatsAppUrl(wa: string, message: string): string {
   return `https://wa.me/${wa}?text=${encodeURIComponent(message)}`;
