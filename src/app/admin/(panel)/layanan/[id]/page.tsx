@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { saveService } from "@/app/admin/actions";
+import { PriceInput } from "@/components/admin/PriceInput";
 import { AdminForm, Checkbox, Field, inputClass } from "@/components/admin/ui";
 import { requireAdmin } from "@/lib/admin";
 
@@ -68,15 +69,7 @@ export default async function ServiceFormPage({
                 </select>
               </Field>
               <Field label="Harga mulai dari (Rp)">
-                <input
-                  name="price_from"
-                  type="number"
-                  min={0}
-                  step={1000}
-                  required
-                  defaultValue={service?.price_from}
-                  className={inputClass}
-                />
+                <PriceInput name="price_from" required defaultValue={service?.price_from} />
               </Field>
             </div>
             <Field label="Deskripsi singkat" hint="Tampil di kartu katalog.">

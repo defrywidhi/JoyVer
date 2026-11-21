@@ -8,6 +8,7 @@ import {
   deleteOrderUpdate,
   updateOrder,
 } from "@/app/admin/actions";
+import { PriceInput } from "@/components/admin/PriceInput";
 import { AdminForm, Checkbox, DeleteButton, Field, inputClass } from "@/components/admin/ui";
 import { requireAdmin } from "@/lib/admin";
 import {
@@ -140,14 +141,7 @@ export default async function OrderDetailPage({
               </select>
             </Field>
             <Field label="Harga final (Rp)" hint="Kosongkan jika belum deal.">
-              <input
-                name="final_price"
-                type="number"
-                min={0}
-                step={1000}
-                defaultValue={o.final_price ?? ""}
-                className={inputClass}
-              />
+              <PriceInput name="final_price" defaultValue={o.final_price} />
             </Field>
             <Field label="Ditugaskan ke">
               <select name="assigned_to" defaultValue={o.assigned_to ?? ""} className={inputClass}>
