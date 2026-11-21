@@ -1,5 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
+import { Suspense } from "react";
+import { FeedbackProvider } from "@/components/ui/Feedback";
+import { NavigationProgress } from "@/components/ui/NavigationProgress";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
@@ -33,7 +36,12 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="id" className={`${fraunces.variable} ${jakarta.variable}`}>
-      <body className="min-h-screen antialiased">{children}</body>
+      <body className="min-h-screen antialiased">
+        <Suspense fallback={null}>
+          <NavigationProgress />
+        </Suspense>
+        <FeedbackProvider>{children}</FeedbackProvider>
+      </body>
     </html>
   );
 }

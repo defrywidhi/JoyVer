@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CloverIcon } from "@/components/Logo";
+import { LogoMark } from "@/components/Logo";
 import { LoginForm } from "./LoginForm";
 
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ export default async function LoginPage({
     <main className="flex min-h-screen items-center justify-center px-5 py-12">
       <div className="w-full max-w-sm rounded-card border border-deep-green/10 bg-white p-8 shadow-soft">
         <div className="mb-6 flex flex-col items-center text-center">
-          <CloverIcon className="size-12 text-clover-green" />
+          <LogoMark size={72} priority />
           <h1 className="mt-2 text-3xl font-semibold">JoyVer Admin</h1>
           <p className="text-sm text-ink/70">Masuk untuk mengelola website.</p>
         </div>

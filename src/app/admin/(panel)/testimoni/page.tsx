@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { deleteTestimonial, setTestimonialApproval } from "@/app/admin/actions";
-import { DeleteButton } from "@/components/admin/ui";
+import { ActionButton, DeleteButton } from "@/components/admin/ui";
 import { Stars } from "@/components/Stars";
 import { requireAdmin } from "@/lib/admin";
 import { formatDateTime } from "@/lib/site";
@@ -59,13 +59,11 @@ export default async function TestimonialsAdminPage() {
               <p className="mt-2 text-sm font-semibold text-deep-green">{t.name}</p>
 
               <div className="mt-4 flex items-center gap-2">
-                <form action={setTestimonialApproval}>
-                  <input type="hidden" name="id" value={t.id} />
-                  <input type="hidden" name="approve" value={t.is_approved ? "0" : "1"} />
-                  <button className="rounded-pill bg-deep-green px-4 py-1.5 text-xs font-semibold text-off-white hover:bg-deep-green-dark">
-                    {t.is_approved ? "Sembunyikan" : "Setujui"}
-                  </button>
-                </form>
+                <ActionButton
+                  action={setTestimonialApproval}
+                  fields={{ id: t.id, approve: t.is_approved ? "0" : "1" }}
+                  label={t.is_approved ? "Sembunyikan" : "Setujui"}
+                />
                 <DeleteButton action={deleteTestimonial} fields={{ id: t.id }} confirmText="Hapus testimoni ini?" />
               </div>
             </li>

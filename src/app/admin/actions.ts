@@ -1,13 +1,18 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { requireAdmin, slugify, uploadImage } from "@/lib/admin";
+import { PUBLIC_DATA_TAG } from "@/lib/cache";
 import { getClientIp, rateLimit, waitMessage } from "@/lib/rate-limit";
 import { ORDER_STATUS_LABEL } from "@/lib/site";
 import { createClient } from "@/lib/supabase/server";
 
-export type FormState = { error?: string; success?: string };
+export type FormState = {
+  error?: string;
+  success?: string;
+  /** Klien akan menavigasi ke sini setelah toast ditampilkan. */
+  redirectTo?: string;
+};
 
 const str = (fd: FormData, key: string) => String(fd.get(key) ?? "").trim();
 const optStr = (fd: FormData, key: string) => str(fd, key) || null;
@@ -16,6 +21,13 @@ const num = (fd: FormData, key: string, fallback = 0) => {
   return Number.isFinite(v) ? v : fallback;
 };
 const msg = (e: unknown) => (e instanceof Error ? e.message : "Terjadi kesalahan.");
+
+/** Segarkan data publik (cache ISR) dan halaman admin terkait. */
+function revalidatePublic(...adminPaths: string[]) {
+  revalidateTag(PUBLIC_DATA_TAG);
+  revalidatePath("/", "layout");
+  adminPaths.forEach((p) => revalidatePath(p));
+}
 
 // ---------------------------------------------------------------
 // Auth
@@ -39,13 +51,16 @@ export async function login(_prev: FormState, fd: FormData): Promise<FormState> 
     await supabase.auth.signOut();
     return { error: "Akun ini bukan admin." };
   }
-  redirect("/admin");
+
+  revalidatePath("/admin", "layout");
+  return { success: "Berhasil masuk.", redirectTo: "/admin" };
 }
 
-export async function logout() {
+export async function logout(): Promise<FormState> {
   const supabase = await createClient();
   await supabase.auth.signOut();
-  redirect("/admin/login");
+  revalidatePath("/admin", "layout");
+  return { success: "Anda sudah keluar.", redirectTo: "/admin/login" };
 }
 
 // ---------------------------------------------------------------
@@ -112,18 +127,24 @@ export async function addOrderUpdate(_prev: FormState, fd: FormData): Promise<Fo
   return { success: "Progres ditambahkan." };
 }
 
-export async function deleteOrderUpdate(fd: FormData) {
+export async function deleteOrderUpdate(_prev: FormState, fd: FormData): Promise<FormState> {
   const { supabase } = await requireAdmin();
   const orderId = str(fd, "order_id");
-  await supabase.from("order_updates").delete().eq("id", str(fd, "id"));
+  const { error } = await supabase.from("order_updates").delete().eq("id", str(fd, "id"));
+  if (error) return { error: "Gagal menghapus progres." };
+
   revalidatePath(`/admin/orders/${orderId}`);
+  return { success: "Progres dihapus." };
 }
 
-export async function deleteOrder(fd: FormData) {
+export async function deleteOrder(_prev: FormState, fd: FormData): Promise<FormState> {
   const { supabase } = await requireAdmin();
-  await supabase.from("orders").delete().eq("id", str(fd, "id"));
+  const { error } = await supabase.from("orders").delete().eq("id", str(fd, "id"));
+  if (error) return { error: "Gagal menghapus order." };
+
   revalidatePath("/admin/orders");
-  redirect("/admin/orders");
+  revalidatePath("/admin");
+  return { success: "Order dihapus.", redirectTo: "/admin/orders" };
 }
 
 // ---------------------------------------------------------------
@@ -154,15 +175,24 @@ export async function saveCategory(_prev: FormState, fd: FormData): Promise<Form
     };
   }
 
-  revalidatePath("/admin/kategori");
-  revalidatePath("/", "layout");
-  return { success: "Tersimpan." };
+  revalidatePublic("/admin/kategori", "/admin/layanan");
+  return { success: id ? "Kategori diperbarui." : "Kategori ditambahkan." };
 }
 
-export async function deleteCategory(fd: FormData) {
+export async function deleteCategory(_prev: FormState, fd: FormData): Promise<FormState> {
   const { supabase } = await requireAdmin();
-  await supabase.from("categories").delete().eq("id", str(fd, "id"));
-  revalidatePath("/admin/kategori");
+  const { error } = await supabase.from("categories").delete().eq("id", str(fd, "id"));
+  if (error) {
+    return {
+      error:
+        error.code === "23503"
+          ? "Kategori masih dipakai layanan. Pindahkan atau hapus layanannya dulu."
+          : "Gagal menghapus kategori.",
+    };
+  }
+
+  revalidatePublic("/admin/kategori");
+  return { success: "Kategori dihapus." };
 }
 
 // ---------------------------------------------------------------
@@ -207,15 +237,27 @@ export async function saveService(_prev: FormState, fd: FormData): Promise<FormS
     return { error: msg(e) };
   }
 
-  revalidatePath("/", "layout");
-  redirect("/admin/layanan");
+  revalidatePublic("/admin/layanan");
+  return {
+    success: id ? "Layanan diperbarui." : "Layanan ditambahkan.",
+    redirectTo: "/admin/layanan",
+  };
 }
 
-export async function deleteService(fd: FormData) {
+export async function deleteService(_prev: FormState, fd: FormData): Promise<FormState> {
   const { supabase } = await requireAdmin();
   const { error } = await supabase.from("services").delete().eq("id", str(fd, "id"));
-  revalidatePath("/admin/layanan");
-  if (error) redirect("/admin/layanan?error=dipakai");
+  if (error) {
+    return {
+      error:
+        error.code === "23503"
+          ? "Layanan sudah dipakai order, tidak bisa dihapus. Nonaktifkan saja."
+          : "Gagal menghapus layanan.",
+    };
+  }
+
+  revalidatePublic("/admin/layanan");
+  return { success: "Layanan dihapus." };
 }
 
 // ---------------------------------------------------------------
@@ -252,35 +294,46 @@ export async function saveTeamMember(_prev: FormState, fd: FormData): Promise<Fo
     return { error: msg(e) };
   }
 
-  revalidatePath("/", "layout");
-  redirect("/admin/tim");
+  revalidatePublic("/admin/tim");
+  return {
+    success: id ? "Anggota tim diperbarui." : "Anggota tim ditambahkan.",
+    redirectTo: "/admin/tim",
+  };
 }
 
-export async function deleteTeamMember(fd: FormData) {
+export async function deleteTeamMember(_prev: FormState, fd: FormData): Promise<FormState> {
   const { supabase } = await requireAdmin();
-  await supabase.from("team_members").delete().eq("id", str(fd, "id"));
-  revalidatePath("/admin/tim");
+  const { error } = await supabase.from("team_members").delete().eq("id", str(fd, "id"));
+  if (error) return { error: "Gagal menghapus anggota tim." };
+
+  revalidatePublic("/admin/tim", "/admin/orders");
+  return { success: "Anggota tim dihapus." };
 }
 
 // ---------------------------------------------------------------
 // Testimoni
 // ---------------------------------------------------------------
 
-export async function setTestimonialApproval(fd: FormData) {
+export async function setTestimonialApproval(_prev: FormState, fd: FormData): Promise<FormState> {
   const { supabase } = await requireAdmin();
-  await supabase
+  const approve = str(fd, "approve") === "1";
+  const { error } = await supabase
     .from("testimonials")
-    .update({ is_approved: str(fd, "approve") === "1" })
+    .update({ is_approved: approve })
     .eq("id", str(fd, "id"));
-  revalidatePath("/admin/testimoni");
-  revalidatePath("/", "layout");
+  if (error) return { error: "Gagal memperbarui testimoni." };
+
+  revalidatePublic("/admin/testimoni", "/admin");
+  return { success: approve ? "Testimoni ditampilkan." : "Testimoni disembunyikan." };
 }
 
-export async function deleteTestimonial(fd: FormData) {
+export async function deleteTestimonial(_prev: FormState, fd: FormData): Promise<FormState> {
   const { supabase } = await requireAdmin();
-  await supabase.from("testimonials").delete().eq("id", str(fd, "id"));
-  revalidatePath("/admin/testimoni");
-  revalidatePath("/", "layout");
+  const { error } = await supabase.from("testimonials").delete().eq("id", str(fd, "id"));
+  if (error) return { error: "Gagal menghapus testimoni." };
+
+  revalidatePublic("/admin/testimoni", "/admin");
+  return { success: "Testimoni dihapus." };
 }
 
 // ---------------------------------------------------------------
@@ -299,6 +352,6 @@ export async function saveSettings(_prev: FormState, fd: FormData): Promise<Form
     .upsert({ key: "admin_wa", value: normalized });
   if (error) return { error: "Gagal menyimpan pengaturan." };
 
-  revalidatePath("/", "layout");
+  revalidatePublic("/admin/pengaturan");
   return { success: "Pengaturan tersimpan." };
 }

@@ -13,6 +13,7 @@ import {
   ORDER_STATUS_LABEL,
   type OrderStatus,
 } from "@/lib/site";
+import { Spinner } from "./ui/Spinner";
 import { ReviewForm } from "./ReviewForm";
 
 const initialState: TrackState = {};
@@ -75,9 +76,11 @@ export function TrackForm() {
         <button
           type="submit"
           disabled={pending}
-          className="w-full rounded-pill bg-golden-yellow px-6 py-3.5 font-semibold text-deep-green shadow-soft transition hover:-translate-y-0.5 hover:bg-golden-dark disabled:cursor-not-allowed disabled:opacity-60"
+          aria-busy={pending}
+          className="inline-flex w-full items-center justify-center gap-2 rounded-pill bg-golden-yellow px-6 py-3.5 font-semibold text-deep-green shadow-soft transition hover:-translate-y-0.5 hover:bg-golden-dark disabled:cursor-not-allowed disabled:opacity-70"
         >
-          {pending ? "Mencari..." : "Lacak Pesanan"}
+          {pending && <Spinner className="size-5" />}
+          {pending ? "Mencari pesanan..." : "Lacak Pesanan"}
         </button>
       </form>
 

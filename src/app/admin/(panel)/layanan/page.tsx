@@ -15,12 +15,7 @@ type Row = {
   category: { name: string } | null;
 };
 
-export default async function ServicesAdminPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ error?: string }>;
-}) {
-  const { error } = await searchParams;
+export default async function ServicesAdminPage() {
   const { supabase } = await requireAdmin();
   const { data } = await supabase
     .from("services")
@@ -40,11 +35,6 @@ export default async function ServicesAdminPage({
         </Link>
       </div>
 
-      {error === "dipakai" && (
-        <p role="alert" className="rounded-xl bg-red-50 px-4 py-2.5 text-sm text-red-700">
-          Layanan tidak bisa dihapus karena sudah dipakai order. Nonaktifkan saja.
-        </p>
-      )}
 
       <div className="overflow-hidden rounded-card border border-deep-green/10 bg-white">
         {rows.length === 0 ? (

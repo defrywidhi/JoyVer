@@ -1,11 +1,13 @@
 import { redirect } from "next/navigation";
+import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 
 /**
  * Pastikan pemanggil adalah admin terdaftar (tabel `admins`).
  * Middleware hanya mengecek login; pengecekan peran ada di sini dan di RLS.
+ * Di-cache per request agar layout dan halaman tidak mengecek dua kali.
  */
-export async function requireAdmin() {
+export const requireAdmin = cache(async () => {
   const supabase = await createClient();
   const {
     data: { user },
@@ -18,7 +20,7 @@ export async function requireAdmin() {
     redirect("/admin/login?error=forbidden");
   }
   return { supabase, user };
-}
+});
 
 export function slugify(text: string): string {
   return text

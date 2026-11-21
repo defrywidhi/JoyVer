@@ -7,9 +7,15 @@ import { OrderForm } from "@/components/OrderForm";
 import { getServiceBySlug } from "@/lib/data";
 import { formatRupiah } from "@/lib/site";
 
-export const dynamic = "force-dynamic";
+// Segment config harus literal; samakan dengan PUBLIC_REVALIDATE_SECONDS di lib/cache.ts.
+export const revalidate = 300;
 
 type Props = { params: Promise<{ slug: string }> };
+
+// Tanpa pra-render saat build; tiap halaman layanan dibuat saat pertama dibuka lalu di-cache (ISR).
+export function generateStaticParams() {
+  return [];
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site";
 
@@ -21,15 +22,39 @@ export function CloverIcon({ className = "size-8" }: { className?: string }) {
   );
 }
 
+/** Logo resmi (public/logo.png). Ikon persegi tanpa teks, jadi nama dipasang terpisah. */
+export function LogoMark({
+  size = 40,
+  priority = false,
+  className = "",
+}: {
+  size?: number;
+  priority?: boolean;
+  className?: string;
+}) {
+  return (
+    <Image
+      src="/logo.png"
+      alt=""
+      width={size}
+      height={size}
+      priority={priority}
+      className={`shrink-0 rounded-[22%] object-cover ${className}`}
+      style={{ width: size, height: size }}
+    />
+  );
+}
+
 export function Logo({ light = false }: { light?: boolean }) {
   return (
     <Link
       href="/"
-      className={`flex items-center gap-2 font-heading text-2xl font-semibold ${
+      aria-label={`${siteConfig.name}, ke beranda`}
+      className={`flex items-center gap-2.5 font-heading text-2xl font-semibold ${
         light ? "text-off-white" : "text-deep-green"
       }`}
     >
-      <CloverIcon className="size-8 text-clover-green" />
+      <LogoMark size={40} priority className={light ? "ring-1 ring-white/25" : ""} />
       {siteConfig.name}
     </Link>
   );

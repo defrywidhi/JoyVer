@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { submitOrder, type OrderFormState } from "@/app/(site)/actions";
+import { Spinner } from "@/components/ui/Spinner";
 
 const initialState: OrderFormState = {};
 
@@ -90,9 +91,11 @@ export function OrderForm({
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-pill bg-golden-yellow px-6 py-3.5 font-semibold text-deep-green shadow-soft transition hover:-translate-y-0.5 hover:bg-golden-dark disabled:cursor-not-allowed disabled:opacity-60"
+        aria-busy={pending}
+        className="inline-flex w-full items-center justify-center gap-2 rounded-pill bg-golden-yellow px-6 py-3.5 font-semibold text-deep-green shadow-soft transition hover:-translate-y-0.5 hover:bg-golden-dark disabled:cursor-not-allowed disabled:opacity-70"
       >
-        {pending ? "Menyimpan..." : "Pesan via WhatsApp"}
+        {pending && <Spinner className="size-5" />}
+        {pending ? "Menyimpan pesanan..." : "Pesan via WhatsApp"}
       </button>
       <p className="text-center text-xs text-ink/60">
         Anda akan diarahkan ke WhatsApp untuk diskusi sampai deal. Belum ada

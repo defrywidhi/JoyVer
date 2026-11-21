@@ -8,7 +8,8 @@ export const metadata: Metadata = {
   description: "Kenalan dengan tim di balik JoyVer.",
 };
 
-export const dynamic = "force-dynamic";
+// Segment config harus literal; samakan dengan PUBLIC_REVALIDATE_SECONDS di lib/cache.ts.
+export const revalidate = 300;
 
 export default async function TimPage() {
   const team = await getTeam();

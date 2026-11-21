@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { submitReview, type ReviewState } from "@/app/(site)/lacak/actions";
+import { Spinner } from "@/components/ui/Spinner";
 
 const initialState: ReviewState = {};
 
@@ -99,8 +100,10 @@ export function ReviewForm({ code, wa }: { code: string; wa: string }) {
       <button
         type="submit"
         disabled={pending}
-        className="rounded-pill bg-deep-green px-6 py-3 font-semibold text-off-white transition hover:bg-deep-green-dark disabled:cursor-not-allowed disabled:opacity-60"
+        aria-busy={pending}
+        className="inline-flex items-center gap-2 rounded-pill bg-deep-green px-6 py-3 font-semibold text-off-white transition hover:bg-deep-green-dark disabled:cursor-not-allowed disabled:opacity-70"
       >
+        {pending && <Spinner className="size-5" />}
         {pending ? "Mengirim..." : "Kirim Testimoni"}
       </button>
     </form>

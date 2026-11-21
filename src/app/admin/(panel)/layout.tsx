@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { logout } from "@/app/admin/actions";
 import { AdminNav } from "@/components/admin/AdminNav";
+import { ActionButton } from "@/components/admin/ui";
 import { Logo } from "@/components/Logo";
 import { requireAdmin } from "@/lib/admin";
 
@@ -26,11 +27,17 @@ export default async function PanelLayout({
             Lihat situs
           </Link>
           <span className="hidden text-ink/60 sm:inline">{user.email}</span>
-          <form action={logout}>
-            <button className="rounded-pill border border-deep-green/30 px-4 py-1.5 font-semibold text-deep-green hover:bg-clover-soft">
-              Keluar
-            </button>
-          </form>
+          <ActionButton
+            action={logout}
+            label="Keluar"
+            pendingLabel="Keluar..."
+            variant="outline"
+            confirm={{
+              title: "Keluar dari admin?",
+              message: "Anda perlu masuk lagi untuk mengelola website.",
+              confirmLabel: "Ya, keluar",
+            }}
+          />
         </div>
       </header>
 

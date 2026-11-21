@@ -10,7 +10,8 @@ import {
 } from "@/lib/data";
 import { buildWhatsAppUrl, siteConfig } from "@/lib/site";
 
-export const dynamic = "force-dynamic";
+// Segment config harus literal; samakan dengan PUBLIC_REVALIDATE_SECONDS di lib/cache.ts.
+export const revalidate = 300;
 
 const steps = [
   { title: "Pilih layanan", text: "Lihat katalog dan pilih yang sesuai kebutuhan." },
