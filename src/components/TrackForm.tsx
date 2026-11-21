@@ -6,7 +6,7 @@ import {
   trackOrder,
   type TrackedOrder,
   type TrackState,
-} from "@/app/lacak/actions";
+} from "@/app/(site)/lacak/actions";
 import {
   formatDateTime,
   formatRupiah,

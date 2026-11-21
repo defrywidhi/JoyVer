@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
-import { submitReview, type ReviewState } from "@/app/lacak/actions";
+import { submitReview, type ReviewState } from "@/app/(site)/lacak/actions";
 
 const initialState: ReviewState = {};
 

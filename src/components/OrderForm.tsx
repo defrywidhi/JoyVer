@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { submitOrder, type OrderFormState } from "@/app/actions";
+import { submitOrder, type OrderFormState } from "@/app/(site)/actions";
 
 const initialState: OrderFormState = {};
 
