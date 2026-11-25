@@ -50,11 +50,11 @@ export default async function OrdersPage({
       <h1 className="text-3xl font-semibold">Order</h1>
 
       <div className="flex flex-wrap gap-2">
-        <Link href="/admin/orders" className={chip(!status)}>
+        <Link href="/adalahpokoknya/orders" className={chip(!status)}>
           Semua
         </Link>
         {(Object.keys(ORDER_STATUS_LABEL) as OrderStatus[]).map((s) => (
-          <Link key={s} href={`/admin/orders?status=${s}`} className={chip(status === s)}>
+          <Link key={s} href={`/adalahpokoknya/orders?status=${s}`} className={chip(status === s)}>
             {ORDER_STATUS_LABEL[s]}
           </Link>
         ))}
@@ -80,7 +80,7 @@ export default async function OrdersPage({
               {rows.map((o) => (
                 <tr key={o.id} className="hover:bg-clover-soft/40">
                   <td className="px-4 py-3 font-semibold">
-                    <Link href={`/admin/orders/${o.id}`} className="text-deep-green underline underline-offset-4">
+                    <Link href={`/adalahpokoknya/orders/${o.id}`} className="text-deep-green underline underline-offset-4">
                       {o.code}
                     </Link>
                   </td>

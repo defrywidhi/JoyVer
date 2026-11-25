@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { deleteTestimonial, setTestimonialApproval } from "@/app/admin/actions";
+import { deleteTestimonial, setTestimonialApproval } from "@/app/adalahpokoknya/actions";
 import { ActionButton, DeleteButton } from "@/components/admin/ui";
 import { Stars } from "@/components/Stars";
 import { requireAdmin } from "@/lib/admin";

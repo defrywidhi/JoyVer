@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { deleteTeamMember } from "@/app/admin/actions";
+import { deleteTeamMember } from "@/app/adalahpokoknya/actions";
 import { DeleteButton } from "@/components/admin/ui";
 import { requireAdmin } from "@/lib/admin";
 
@@ -27,7 +27,7 @@ export default async function TeamAdminPage() {
       <div className="flex items-center justify-between gap-3">
         <h1 className="text-3xl font-semibold">Tim</h1>
         <Link
-          href="/admin/tim/baru"
+          href="/adalahpokoknya/tim/baru"
           className="rounded-pill bg-golden-yellow px-5 py-2 text-sm font-semibold text-deep-green hover:bg-golden-dark"
         >
           + Anggota baru
@@ -56,7 +56,7 @@ export default async function TeamAdminPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Link
-                    href={`/admin/tim/${m.id}`}
+                    href={`/adalahpokoknya/tim/${m.id}`}
                     className="rounded-pill border border-deep-green/30 px-3 py-1 text-xs font-semibold text-deep-green hover:bg-clover-soft"
                   >
                     Ubah

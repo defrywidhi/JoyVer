@@ -129,7 +129,7 @@ Aturan: dominan off white, hijau tua untuk struktur, kuning hanya untuk aksi uta
 4. Lacak Pesanan
 5. Tentang, Syarat & Ketentuan, Kebijakan Privasi
 
-**Admin** (`/admin`, wajib login)
+**Admin** (`/adalahpokoknya`, wajib login; login di `/adalahpokoknya/login`)
 1. Ringkasan order
 2. Order (daftar, detail, ubah status, tugaskan, progres)
 3. Layanan dan kategori
@@ -173,6 +173,6 @@ Aturan: dominan off white, hijau tua untuk struktur, kuning hanya untuk aksi uta
 2. [x] Inisialisasi proyek Next.js + Tailwind, tema warna dan font (Fraunces + Plus Jakarta Sans)
 3. [x] Halaman publik: beranda, katalog, tim, form order + redirect WA (halaman `/lacak` masih placeholder, dikerjakan di langkah 4)
 4. [x] Tracking order dan testimoni (`/lacak`, rate limiting di form order, lacak, dan testimoni; limiter masih in-memory, upgrade ke Upstash/Supabase sebelum trafik besar)
-5. [x] Dashboard admin (CRUD + progres): login, order, layanan, kategori, tim, testimoni, pengaturan WA di `/admin`
+5. [x] Dashboard admin (CRUD + progres): login, order, layanan, kategori, tim, testimoni, pengaturan WA/email di `/adalahpokoknya`
 6. [x] Notifikasi email ke admin via Resend (best-effort dengan `after()`; penerima utama dari `site_settings.admin_notification_email`, fallback `ADMIN_NOTIFICATION_EMAIL`; lihat README.md)
 7. [x] Halaman Tentang, Syarat & Ketentuan, Kebijakan Privasi, canonical metadata, sitemap, audit dependency; deploy ke Vercel masih menunggu domain dan konfigurasi production

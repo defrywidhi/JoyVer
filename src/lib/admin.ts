@@ -12,12 +12,12 @@ export const requireAdmin = cache(async () => {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/admin/login");
+  if (!user) redirect("/adalahpokoknya/login");
 
   const { data: isAdmin } = await supabase.rpc("is_admin");
   if (!isAdmin) {
     await supabase.auth.signOut();
-    redirect("/admin/login?error=forbidden");
+    redirect("/adalahpokoknya/login?error=forbidden");
   }
   return { supabase, user };
 });

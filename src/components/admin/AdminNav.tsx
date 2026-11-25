@@ -4,13 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const items = [
-  { href: "/admin", label: "Ringkasan" },
-  { href: "/admin/orders", label: "Order" },
-  { href: "/admin/layanan", label: "Layanan" },
-  { href: "/admin/kategori", label: "Kategori" },
-  { href: "/admin/tim", label: "Tim" },
-  { href: "/admin/testimoni", label: "Testimoni" },
-  { href: "/admin/pengaturan", label: "Pengaturan" },
+  { href: "/adalahpokoknya", label: "Ringkasan" },
+  { href: "/adalahpokoknya/orders", label: "Order" },
+  { href: "/adalahpokoknya/layanan", label: "Layanan" },
+  { href: "/adalahpokoknya/kategori", label: "Kategori" },
+  { href: "/adalahpokoknya/tim", label: "Tim" },
+  { href: "/adalahpokoknya/testimoni", label: "Testimoni" },
+  { href: "/adalahpokoknya/pengaturan", label: "Pengaturan" },
 ];
 
 export function AdminNav() {
@@ -19,7 +19,7 @@ export function AdminNav() {
     <nav aria-label="Admin" className="flex gap-1 overflow-x-auto md:flex-col">
       {items.map((i) => {
         const active =
-          i.href === "/admin" ? pathname === "/admin" : pathname.startsWith(i.href);
+          i.href === "/adalahpokoknya" ? pathname === "/adalahpokoknya" : pathname.startsWith(i.href);
         return (
           <Link
             key={i.href}

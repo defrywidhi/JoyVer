@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { deleteCategory, saveCategory } from "@/app/admin/actions";
+import { deleteCategory, saveCategory } from "@/app/adalahpokoknya/actions";
 import { AdminForm, Checkbox, DeleteButton, Field, inputClass } from "@/components/admin/ui";
 import { requireAdmin } from "@/lib/admin";
 

@@ -52,15 +52,15 @@ export async function login(_prev: FormState, fd: FormData): Promise<FormState> 
     return { error: "Akun ini bukan admin." };
   }
 
-  revalidatePath("/admin", "layout");
-  return { success: "Berhasil masuk.", redirectTo: "/admin" };
+  revalidatePath("/adalahpokoknya", "layout");
+  return { success: "Berhasil masuk.", redirectTo: "/adalahpokoknya" };
 }
 
 export async function logout(): Promise<FormState> {
   const supabase = await createClient();
   await supabase.auth.signOut();
-  revalidatePath("/admin", "layout");
-  return { success: "Anda sudah keluar.", redirectTo: "/admin/login" };
+  revalidatePath("/adalahpokoknya", "layout");
+  return { success: "Anda sudah keluar.", redirectTo: "/adalahpokoknya/login" };
 }
 
 // ---------------------------------------------------------------
@@ -90,9 +90,9 @@ export async function updateOrder(_prev: FormState, fd: FormData): Promise<FormS
     .eq("id", id);
   if (error) return { error: "Gagal menyimpan order." };
 
-  revalidatePath(`/admin/orders/${id}`);
-  revalidatePath("/admin/orders");
-  revalidatePath("/admin");
+  revalidatePath(`/adalahpokoknya/orders/${id}`);
+  revalidatePath("/adalahpokoknya/orders");
+  revalidatePath("/adalahpokoknya");
   return { success: "Order diperbarui." };
 }
 
@@ -123,7 +123,7 @@ export async function addOrderUpdate(_prev: FormState, fd: FormData): Promise<Fo
     return { error: msg(e) };
   }
 
-  revalidatePath(`/admin/orders/${orderId}`);
+  revalidatePath(`/adalahpokoknya/orders/${orderId}`);
   return { success: "Progres ditambahkan." };
 }
 
@@ -133,7 +133,7 @@ export async function deleteOrderUpdate(_prev: FormState, fd: FormData): Promise
   const { error } = await supabase.from("order_updates").delete().eq("id", str(fd, "id"));
   if (error) return { error: "Gagal menghapus progres." };
 
-  revalidatePath(`/admin/orders/${orderId}`);
+  revalidatePath(`/adalahpokoknya/orders/${orderId}`);
   return { success: "Progres dihapus." };
 }
 
@@ -142,9 +142,9 @@ export async function deleteOrder(_prev: FormState, fd: FormData): Promise<FormS
   const { error } = await supabase.from("orders").delete().eq("id", str(fd, "id"));
   if (error) return { error: "Gagal menghapus order." };
 
-  revalidatePath("/admin/orders");
-  revalidatePath("/admin");
-  return { success: "Order dihapus.", redirectTo: "/admin/orders" };
+  revalidatePath("/adalahpokoknya/orders");
+  revalidatePath("/adalahpokoknya");
+  return { success: "Order dihapus.", redirectTo: "/adalahpokoknya/orders" };
 }
 
 // ---------------------------------------------------------------
@@ -175,7 +175,7 @@ export async function saveCategory(_prev: FormState, fd: FormData): Promise<Form
     };
   }
 
-  revalidatePublic("/admin/kategori", "/admin/layanan");
+  revalidatePublic("/adalahpokoknya/kategori", "/adalahpokoknya/layanan");
   return { success: id ? "Kategori diperbarui." : "Kategori ditambahkan." };
 }
 
@@ -191,7 +191,7 @@ export async function deleteCategory(_prev: FormState, fd: FormData): Promise<Fo
     };
   }
 
-  revalidatePublic("/admin/kategori");
+  revalidatePublic("/adalahpokoknya/kategori");
   return { success: "Kategori dihapus." };
 }
 
@@ -237,10 +237,10 @@ export async function saveService(_prev: FormState, fd: FormData): Promise<FormS
     return { error: msg(e) };
   }
 
-  revalidatePublic("/admin/layanan");
+  revalidatePublic("/adalahpokoknya/layanan");
   return {
     success: id ? "Layanan diperbarui." : "Layanan ditambahkan.",
-    redirectTo: "/admin/layanan",
+    redirectTo: "/adalahpokoknya/layanan",
   };
 }
 
@@ -256,7 +256,7 @@ export async function deleteService(_prev: FormState, fd: FormData): Promise<For
     };
   }
 
-  revalidatePublic("/admin/layanan");
+  revalidatePublic("/adalahpokoknya/layanan");
   return { success: "Layanan dihapus." };
 }
 
@@ -294,10 +294,10 @@ export async function saveTeamMember(_prev: FormState, fd: FormData): Promise<Fo
     return { error: msg(e) };
   }
 
-  revalidatePublic("/admin/tim");
+  revalidatePublic("/adalahpokoknya/tim");
   return {
     success: id ? "Anggota tim diperbarui." : "Anggota tim ditambahkan.",
-    redirectTo: "/admin/tim",
+    redirectTo: "/adalahpokoknya/tim",
   };
 }
 
@@ -306,7 +306,7 @@ export async function deleteTeamMember(_prev: FormState, fd: FormData): Promise<
   const { error } = await supabase.from("team_members").delete().eq("id", str(fd, "id"));
   if (error) return { error: "Gagal menghapus anggota tim." };
 
-  revalidatePublic("/admin/tim", "/admin/orders");
+  revalidatePublic("/adalahpokoknya/tim", "/adalahpokoknya/orders");
   return { success: "Anggota tim dihapus." };
 }
 
@@ -323,7 +323,7 @@ export async function setTestimonialApproval(_prev: FormState, fd: FormData): Pr
     .eq("id", str(fd, "id"));
   if (error) return { error: "Gagal memperbarui testimoni." };
 
-  revalidatePublic("/admin/testimoni", "/admin");
+  revalidatePublic("/adalahpokoknya/testimoni", "/adalahpokoknya");
   return { success: approve ? "Testimoni ditampilkan." : "Testimoni disembunyikan." };
 }
 
@@ -332,7 +332,7 @@ export async function deleteTestimonial(_prev: FormState, fd: FormData): Promise
   const { error } = await supabase.from("testimonials").delete().eq("id", str(fd, "id"));
   if (error) return { error: "Gagal menghapus testimoni." };
 
-  revalidatePublic("/admin/testimoni", "/admin");
+  revalidatePublic("/adalahpokoknya/testimoni", "/adalahpokoknya");
   return { success: "Testimoni dihapus." };
 }
 
@@ -361,6 +361,6 @@ export async function saveSettings(_prev: FormState, fd: FormData): Promise<Form
   );
   if (error) return { error: "Gagal menyimpan pengaturan. Pastikan migrasi email admin sudah dijalankan." };
 
-  revalidatePublic("/admin/pengaturan");
+  revalidatePublic("/adalahpokoknya/pengaturan");
   return { success: "Pengaturan tersimpan." };
 }

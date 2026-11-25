@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { saveService } from "@/app/admin/actions";
+import { saveService } from "@/app/adalahpokoknya/actions";
 import { AdminForm, Checkbox, Field, inputClass } from "@/components/admin/ui";
 import { requireAdmin } from "@/lib/admin";
 
@@ -27,7 +27,7 @@ export default async function ServiceFormPage({
 
   return (
     <div className="max-w-2xl space-y-5">
-      <Link href="/admin/layanan" className="text-sm font-semibold text-deep-green underline underline-offset-4">
+      <Link href="/adalahpokoknya/layanan" className="text-sm font-semibold text-deep-green underline underline-offset-4">
         &larr; Semua layanan
       </Link>
       <h1 className="text-3xl font-semibold">{isNew ? "Layanan baru" : "Ubah layanan"}</h1>
@@ -35,7 +35,7 @@ export default async function ServiceFormPage({
       {(categories ?? []).length === 0 ? (
         <p className="rounded-xl bg-golden-yellow/20 px-4 py-3 text-sm">
           Buat kategori dulu di menu{" "}
-          <Link href="/admin/kategori" className="font-semibold underline">
+          <Link href="/adalahpokoknya/kategori" className="font-semibold underline">
             Kategori
           </Link>
           .

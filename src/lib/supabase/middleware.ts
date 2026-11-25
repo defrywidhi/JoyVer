@@ -1,7 +1,7 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-/** Menyegarkan sesi Supabase dan mengarahkan non-login keluar dari /admin. */
+/** Menyegarkan sesi Supabase dan mengarahkan non-login keluar dari /adalahpokoknya. */
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
 
@@ -33,9 +33,9 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
-  if (!user && pathname.startsWith("/admin") && pathname !== "/admin/login") {
+  if (!user && pathname.startsWith("/adalahpokoknya") && pathname !== "/adalahpokoknya/login") {
     const url = request.nextUrl.clone();
-    url.pathname = "/admin/login";
+    url.pathname = "/adalahpokoknya/login";
     url.search = "";
     return NextResponse.redirect(url);
   }

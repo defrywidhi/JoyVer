@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { deleteService } from "@/app/admin/actions";
+import { deleteService } from "@/app/adalahpokoknya/actions";
 import { DeleteButton } from "@/components/admin/ui";
 import { requireAdmin } from "@/lib/admin";
 import { formatRupiah } from "@/lib/site";
@@ -28,7 +28,7 @@ export default async function ServicesAdminPage() {
       <div className="flex items-center justify-between gap-3">
         <h1 className="text-3xl font-semibold">Layanan</h1>
         <Link
-          href="/admin/layanan/baru"
+          href="/adalahpokoknya/layanan/baru"
           className="rounded-pill bg-golden-yellow px-5 py-2 text-sm font-semibold text-deep-green hover:bg-golden-dark"
         >
           + Layanan baru
@@ -58,7 +58,7 @@ export default async function ServicesAdminPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Link
-                    href={`/admin/layanan/${s.id}`}
+                    href={`/adalahpokoknya/layanan/${s.id}`}
                     className="rounded-pill border border-deep-green/30 px-3 py-1 text-xs font-semibold text-deep-green hover:bg-clover-soft"
                   >
                     Ubah

@@ -7,7 +7,7 @@ import {
   deleteOrder,
   deleteOrderUpdate,
   updateOrder,
-} from "@/app/admin/actions";
+} from "@/app/adalahpokoknya/actions";
 import { AdminForm, Checkbox, DeleteButton, Field, inputClass } from "@/components/admin/ui";
 import { requireAdmin } from "@/lib/admin";
 import {
@@ -81,7 +81,7 @@ export default async function OrderDetailPage({
 
   return (
     <div className="space-y-6">
-      <Link href="/admin/orders" className="text-sm font-semibold text-deep-green underline underline-offset-4">
+      <Link href="/adalahpokoknya/orders" className="text-sm font-semibold text-deep-green underline underline-offset-4">
         &larr; Semua order
       </Link>
 

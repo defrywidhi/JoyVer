@@ -39,7 +39,7 @@ export async function sendOrderNotification(order: OrderNotification): Promise<v
 
   try {
     const resend = new Resend(apiKey);
-    const orderUrl = new URL(`/admin/orders/${encodeURIComponent(order.code)}`, siteUrl).toString();
+    const orderUrl = new URL(`/adalahpokoknya/orders/${encodeURIComponent(order.code)}`, siteUrl).toString();
     const safe = {
       code: escapeHtml(order.code),
       customerName: escapeHtml(order.customerName),

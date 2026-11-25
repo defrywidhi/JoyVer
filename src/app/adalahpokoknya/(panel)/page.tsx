@@ -44,7 +44,7 @@ export default async function AdminHome() {
         {(Object.keys(ORDER_STATUS_LABEL) as OrderStatus[]).map((s) => (
           <Link
             key={s}
-            href={`/admin/orders?status=${s}`}
+            href={`/adalahpokoknya/orders?status=${s}`}
             className="rounded-card border border-deep-green/10 bg-white p-4 shadow-soft transition hover:-translate-y-0.5"
           >
             <p className="font-heading text-3xl font-semibold text-deep-green">
@@ -57,7 +57,7 @@ export default async function AdminHome() {
 
       {(pendingReviews ?? 0) > 0 && (
         <Link
-          href="/admin/testimoni"
+          href="/adalahpokoknya/testimoni"
           className="block rounded-card bg-golden-yellow/20 px-5 py-3 text-sm font-semibold text-deep-green"
         >
           {pendingReviews} testimoni menunggu persetujuan &rarr;
@@ -74,7 +74,7 @@ export default async function AdminHome() {
               {(recent as unknown as RecentOrder[]).map((o) => (
                 <li key={o.id}>
                   <Link
-                    href={`/admin/orders/${o.id}`}
+                    href={`/adalahpokoknya/orders/${o.id}`}
                     className="flex flex-wrap items-center justify-between gap-2 px-5 py-3 hover:bg-clover-soft/50"
                   >
                     <span>

@@ -1,6 +1,6 @@
 "use client";
 
-import { login } from "@/app/admin/actions";
+import { login } from "@/app/adalahpokoknya/actions";
 import { AdminForm, Field, inputClass } from "@/components/admin/ui";
 
 export function LoginForm() {

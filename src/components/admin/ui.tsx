@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useRef } from "react";
-import type { FormState } from "@/app/admin/actions";
+import type { FormState } from "@/app/adalahpokoknya/actions";
 import { useConfirm, useToast, type ConfirmOptions } from "@/components/ui/Feedback";
 import { Spinner } from "@/components/ui/Spinner";
 

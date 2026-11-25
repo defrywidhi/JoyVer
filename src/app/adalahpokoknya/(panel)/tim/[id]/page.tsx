@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { saveTeamMember } from "@/app/admin/actions";
+import { saveTeamMember } from "@/app/adalahpokoknya/actions";
 import { AdminForm, Checkbox, Field, inputClass } from "@/components/admin/ui";
 import { requireAdmin } from "@/lib/admin";
 
@@ -24,7 +24,7 @@ export default async function TeamFormPage({
 
   return (
     <div className="max-w-2xl space-y-5">
-      <Link href="/admin/tim" className="text-sm font-semibold text-deep-green underline underline-offset-4">
+      <Link href="/adalahpokoknya/tim" className="text-sm font-semibold text-deep-green underline underline-offset-4">
         &larr; Semua anggota
       </Link>
       <h1 className="text-3xl font-semibold">{isNew ? "Anggota baru" : "Ubah anggota"}</h1>

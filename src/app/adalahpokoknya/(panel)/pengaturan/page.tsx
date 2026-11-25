@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { saveSettings } from "@/app/admin/actions";
+import { saveSettings } from "@/app/adalahpokoknya/actions";
 import { AdminForm, Field, inputClass } from "@/components/admin/ui";
 import { requireAdmin } from "@/lib/admin";
 

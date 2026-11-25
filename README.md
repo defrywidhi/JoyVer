@@ -37,14 +37,14 @@ WhatsApp. Jika API key kosong atau Resend gagal, order tetap berjalan normal.
      `JoyVer <notifikasi@domain-anda.id>`.
    - `ADMIN_NOTIFICATION_EMAIL`: alamat admin penerima notifikasi.
    - `NEXT_PUBLIC_SITE_URL`: URL website publik, tanpa slash di akhir.
-3. Atur penerima yang diprioritaskan lewat dashboard `/admin/pengaturan` pada
+3. Atur penerima yang diprioritaskan lewat dashboard `/adalahpokoknya/pengaturan` pada
    field **Email Notifikasi Admin**. Jika kosong, aplikasi memakai
    `ADMIN_NOTIFICATION_EMAIL` dari environment.
 4. Jika pengaturan Resend belum lengkap atau pengiriman gagal, error hanya
    dicatat di log server dan tidak membatalkan order.
 
 Email order baru berisi kode order, nama dan WhatsApp pelanggan, layanan,
-detail kebutuhan, serta tautan langsung ke halaman detail admin berdasarkan kode
+detail kebutuhan, serta tautan langsung ke halaman detail admin di `/adalahpokoknya/orders/JV-xxxx` berdasarkan kode
 order. Untuk membuka pengaturan penerima dari dashboard, jalankan migration
 `0002_admin_notification_email.sql` terlebih dahulu.
 

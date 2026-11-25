@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { logout } from "@/app/admin/actions";
+import { logout } from "@/app/adalahpokoknya/actions";
 import { AdminNav } from "@/components/admin/AdminNav";
 import { ActionButton } from "@/components/admin/ui";
 import { Logo } from "@/components/Logo";
