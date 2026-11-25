@@ -6,6 +6,7 @@ import { siteConfig } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Tim",
   description: "Kenalan dengan tim di balik JoyVer.",
+  alternates: { canonical: "/tim" },
 };
 
 // Segment config harus literal; samakan dengan PUBLIC_REVALIDATE_SECONDS di lib/cache.ts.

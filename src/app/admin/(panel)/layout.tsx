@@ -8,7 +8,11 @@ import { requireAdmin } from "@/lib/admin";
 
 export const metadata: Metadata = {
   title: { default: "Admin", template: "%s | Admin JoyVer" },
-  robots: { index: false, follow: false },
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: { index: false, follow: false, noimageindex: true },
+  },
 };
 
 export const dynamic = "force-dynamic";

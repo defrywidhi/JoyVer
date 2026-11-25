@@ -9,9 +9,9 @@ export default async function SettingsPage() {
   const { supabase } = await requireAdmin();
   const { data } = await supabase
     .from("site_settings")
-    .select("value")
-    .eq("key", "admin_wa")
-    .maybeSingle();
+    .select("key, value")
+    .in("key", ["admin_wa", "admin_notification_email"]);
+  const settings = Object.fromEntries((data ?? []).map((row) => [row.key, row.value]));
 
   return (
     <div className="max-w-xl space-y-5">
@@ -26,7 +26,20 @@ export default async function SettingsPage() {
               name="admin_wa"
               type="tel"
               required
-              defaultValue={data?.value ?? ""}
+              defaultValue={settings.admin_wa ?? ""}
+              className={inputClass}
+            />
+          </Field>
+          <Field
+            label="Email Notifikasi Admin"
+            hint="Penerima email order baru. Kosongkan untuk memakai ADMIN_NOTIFICATION_EMAIL dari environment."
+          >
+            <input
+              name="admin_notification_email"
+              type="email"
+              autoComplete="email"
+              placeholder="admin@contoh.id"
+              defaultValue={settings.admin_notification_email ?? ""}
               className={inputClass}
             />
           </Field>

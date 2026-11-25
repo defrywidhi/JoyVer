@@ -4,6 +4,8 @@ import { TrackForm } from "@/components/TrackForm";
 export const metadata: Metadata = {
   title: "Lacak Pesanan",
   description: "Cek status dan progres pesanan JoyVer Anda dengan kode order.",
+  alternates: { canonical: "/lacak" },
+  robots: { index: false, follow: false },
 };
 
 export default function LacakPage() {

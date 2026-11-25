@@ -1,6 +1,8 @@
 "use server";
 
+import { after } from "next/server";
 import { redirect } from "next/navigation";
+import { sendOrderNotification } from "@/lib/email";
 import { getAdminWa } from "@/lib/data";
 import { getClientIp, rateLimit, waitMessage } from "@/lib/rate-limit";
 import { buildWhatsAppUrl, normalizeWa } from "@/lib/site";
@@ -45,6 +47,12 @@ export async function submitOrder(
   }
 
   const supabase = await createClient();
+  const { data: service } = await supabase
+    .from("services")
+    .select("name")
+    .eq("id", serviceId)
+    .eq("is_active", true)
+    .maybeSingle();
   const { data: code, error } = await supabase.rpc("create_order", {
     p_customer_name: name,
     p_customer_wa: normalizedWa,
@@ -59,7 +67,37 @@ export async function submitOrder(
     };
   }
 
-  const adminWa = await getAdminWa();
+  // Jalankan sesudah response, agar Resend tidak menunda redirect pelanggan.
+  // sendOrderNotification menangani sendiri error dan konfigurasi yang kosong.
+  let notificationEmail: string | null = null;
+  try {
+    const { data } = await supabase
+      .from("site_settings")
+      .select("value")
+      .eq("key", "admin_notification_email")
+      .maybeSingle();
+    notificationEmail = data?.value || null;
+  } catch (error) {
+    console.error("[order] Gagal membaca email admin dari pengaturan:", error);
+  }
+
+  after(() =>
+    sendOrderNotification({
+      code,
+      customerName: name,
+      customerWa: normalizedWa,
+      serviceName: service?.name ?? serviceName,
+      details: details || null,
+      notificationEmail,
+    }),
+  );
+
+  let adminWa = "6281234567890";
+  try {
+    adminWa = await getAdminWa();
+  } catch (error) {
+    console.error("[order] Gagal mengambil nomor WA admin, gunakan fallback:", error);
+  }
   const lines = [
     "Halo JoyVer, saya ingin memesan:",
     `Layanan: ${serviceName}`,

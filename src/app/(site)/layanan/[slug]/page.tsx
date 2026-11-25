@@ -23,7 +23,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!service) return { title: "Layanan tidak ditemukan" };
   return {
     title: service.name,
-    description: service.short_description ?? undefined,
+    description: service.short_description ?? service.description ?? undefined,
+    alternates: { canonical: `/layanan/${service.slug}` },
+    openGraph: {
+      type: "website",
+      title: service.name,
+      description: service.short_description ?? service.description ?? undefined,
+      images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: `${service.name} | JoyVer` }],
+    },
   };
 }
 

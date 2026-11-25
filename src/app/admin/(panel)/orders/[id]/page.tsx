@@ -51,16 +51,20 @@ export default async function OrderDetailPage({
   const { id } = await params;
   const { supabase } = await requireAdmin();
 
-  const [{ data: order }, { data: updates }, { data: team }] = await Promise.all([
-    supabase
-      .from("orders")
-      .select("*, service:services(name, price_from)")
-      .eq("id", id)
-      .maybeSingle(),
+  const isOrderCode = /^JV-\d{4,}$/i.test(id);
+  const { data: order } = await supabase
+    .from("orders")
+    .select("*, service:services(name, price_from)")
+    .eq(isOrderCode ? "code" : "id", isOrderCode ? id.toUpperCase() : id)
+    .maybeSingle();
+
+  if (!order) notFound();
+  const o = order as unknown as Order;
+  const [{ data: updates }, { data: team }] = await Promise.all([
     supabase
       .from("order_updates")
       .select("*")
-      .eq("order_id", id)
+      .eq("order_id", o.id)
       .order("created_at", { ascending: false }),
     supabase
       .from("team_members")
@@ -68,9 +72,6 @@ export default async function OrderDetailPage({
       .eq("is_active", true)
       .order("sort_order"),
   ]);
-
-  if (!order) notFound();
-  const o = order as unknown as Order;
   const list = (updates ?? []) as Update[];
 
   const waUrl = buildWhatsAppUrl(

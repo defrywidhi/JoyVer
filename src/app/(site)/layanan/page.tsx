@@ -6,6 +6,7 @@ import { getCategories, getServices } from "@/lib/data";
 export const metadata: Metadata = {
   title: "Layanan",
   description: "Katalog layanan JoyVer: undangan digital, website usaha, dan buket bunga.",
+  alternates: { canonical: "/layanan" },
 };
 
 // Segment config harus literal; samakan dengan PUBLIC_REVALIDATE_SECONDS di lib/cache.ts.

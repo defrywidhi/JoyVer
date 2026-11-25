@@ -33,12 +33,21 @@ export function Footer() {
 
         <div>
           <h2 className="mb-3 font-sans text-sm font-semibold tracking-widest text-golden-yellow uppercase">
-            Cara Pesan
+            Informasi
           </h2>
-          <p className="text-sm text-off-white/80">
-            Pilih layanan, isi form singkat, lalu kita lanjut ngobrol di WhatsApp
-            sampai deal.
-          </p>
+          <ul className="space-y-2 text-sm">
+            {[
+              { href: "/tentang", label: "Tentang Kami" },
+              { href: "/syarat-ketentuan", label: "Syarat & Ketentuan" },
+              { href: "/kebijakan-privasi", label: "Kebijakan Privasi" },
+            ].map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} className="text-off-white/80 hover:text-white">
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
       <div className="border-t border-white/10 py-4 text-center text-xs text-off-white/70">

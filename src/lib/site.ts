@@ -3,6 +3,16 @@ export const siteConfig = {
   tagline: "We Create Joy",
   description:
     "Undangan digital, website usaha, dan buket bunga yang dibuat dengan sepenuh hati.",
+  keywords: [
+    "JoyVer",
+    "undangan digital",
+    "website undangan",
+    "jasa pembuatan website",
+    "website usaha",
+    "buket bunga",
+    "jasa kreatif",
+  ],
+  locale: "id_ID",
   values: "Cultivate relationship, and invite good fortune to grow.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
 } as const;

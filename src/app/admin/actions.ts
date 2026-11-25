@@ -347,10 +347,19 @@ export async function saveSettings(_prev: FormState, fd: FormData): Promise<Form
   if (!/^62\d{8,13}$/.test(normalized)) {
     return { error: "Nomor WhatsApp tidak valid. Contoh: 081234567890." };
   }
-  const { error } = await supabase
-    .from("site_settings")
-    .upsert({ key: "admin_wa", value: normalized });
-  if (error) return { error: "Gagal menyimpan pengaturan." };
+  const email = str(fd, "admin_notification_email").toLowerCase();
+  if (email && !/^\S+@\S+\.\S+$/.test(email)) {
+    return { error: "Format email notifikasi tidak valid." };
+  }
+
+  const { error } = await supabase.from("site_settings").upsert(
+    [
+      { key: "admin_wa", value: normalized },
+      { key: "admin_notification_email", value: email },
+    ],
+    { onConflict: "key" },
+  );
+  if (error) return { error: "Gagal menyimpan pengaturan. Pastikan migrasi email admin sudah dijalankan." };
 
   revalidatePublic("/admin/pengaturan");
   return { success: "Pengaturan tersimpan." };
