@@ -1,17 +1,20 @@
 "use server";
 
 import { after } from "next/server";
-import { redirect } from "next/navigation";
+
 import { sendOrderNotification } from "@/lib/email";
 import { getAdminWa } from "@/lib/data";
 import { getClientIp, rateLimit, waitMessage } from "@/lib/rate-limit";
 import { buildWhatsAppUrl, normalizeWa } from "@/lib/site";
 import { createClient } from "@/lib/supabase/server";
 
-export type OrderFormState = {
-  error?: string;
-  values?: { name: string; wa: string; details: string };
-};
+export type OrderFormState =
+  | {
+      ok?: false;
+      error?: string;
+      values?: { name: string; wa: string; details: string };
+    }
+  | { ok: true; orderCode: string; waUrl: string };
 
 export async function submitOrder(
   _prev: OrderFormState,
@@ -106,5 +109,9 @@ export async function submitOrder(
     details ? `Kebutuhan: ${details}` : null,
   ].filter(Boolean);
 
-  redirect(buildWhatsAppUrl(adminWa, lines.join("\n")));
+  return {
+    ok: true,
+    orderCode: code,
+    waUrl: buildWhatsAppUrl(adminWa, lines.join("\n")),
+  };
 }

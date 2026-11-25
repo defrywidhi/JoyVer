@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { submitOrder, type OrderFormState } from "@/app/(site)/actions";
 import { Spinner } from "@/components/ui/Spinner";
 
@@ -17,6 +17,46 @@ export function OrderForm({
   serviceName: string;
 }) {
   const [state, formAction, pending] = useActionState(submitOrder, initialState);
+
+  useEffect(() => {
+    if (!state.ok) return;
+    const timer = window.setTimeout(() => window.location.assign(state.waUrl), 800);
+    return () => window.clearTimeout(timer);
+  }, [state]);
+
+  if (state.ok) {
+    return (
+      <section
+        role="status"
+        aria-live="polite"
+        className="space-y-4 rounded-card border border-clover-green/30 bg-clover-soft p-6 text-center"
+      >
+        <span className="mx-auto flex size-12 items-center justify-center rounded-full bg-clover-green text-white">
+          <svg viewBox="0 0 24 24" className="size-7" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M5 12.5l4.5 4.5L19 7" />
+          </svg>
+        </span>
+        <div>
+          <h3 className="text-2xl font-semibold">Pesanan Berhasil</h3>
+          <p className="mt-1 text-sm text-ink/75">Kode order Anda:</p>
+          <p className="mt-1 font-heading text-2xl font-bold text-deep-green">{state.orderCode}</p>
+        </div>
+        <p className="text-sm text-ink/75">
+          Membuka WhatsApp... Jika tidak terbuka otomatis, tekan tombol di bawah.
+        </p>
+        <a
+          href={state.waUrl}
+          onClick={(event) => {
+            event.preventDefault();
+            window.location.assign(state.waUrl);
+          }}
+          className="inline-flex w-full items-center justify-center gap-2 rounded-pill bg-golden-yellow px-6 py-3.5 font-semibold text-deep-green shadow-soft transition hover:bg-golden-dark"
+        >
+          Buka WhatsApp
+        </a>
+      </section>
+    );
+  }
 
   return (
     <form action={formAction} className="space-y-4" noValidate>
