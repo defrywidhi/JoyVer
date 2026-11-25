@@ -129,7 +129,7 @@ Aturan: dominan off white, hijau tua untuk struktur, kuning hanya untuk aksi uta
 4. Lacak Pesanan
 5. Tentang, Syarat & Ketentuan, Kebijakan Privasi
 
-**Admin** (`/admin`, wajib login)
+**Admin** (`/adalahpokoknya`, wajib login; login di `/adalahpokoknya/login`)
 1. Ringkasan order
 2. Order (daftar, detail, ubah status, tugaskan, progres)
 3. Layanan dan kategori
@@ -146,6 +146,7 @@ Aturan: dominan off white, hijau tua untuk struktur, kuning hanya untuk aksi uta
 | `orders` | id, code (JV-xxxx), customer_name, customer_wa, service_id, details, status, final_price, assigned_to (team_member_id), created_at |
 | `order_updates` | id, order_id, note, image_url, created_at |
 | `testimonials` | id, order_id (opsional), name, rating (1-5), message, is_approved, created_at |
+| `site_settings` | key/value, termasuk `admin_wa` dan `admin_notification_email` (migration `0002_admin_notification_email.sql`) |
 
 **Keamanan:** aktifkan Row Level Security di Supabase. Publik hanya bisa membaca data aktif/disetujui dan membuat order. Tracking membutuhkan kode order + nomor WA. Semua pengelolaan hanya untuk admin.
 
@@ -160,18 +161,18 @@ Aturan: dominan off white, hijau tua untuk struktur, kuning hanya untuk aksi uta
 
 ## 12. Hal Terbuka
 
-- [ ] File logo (sementara placeholder)
+- [x] File logo resmi tersedia di `public/logo.png`
 - [ ] Nomor WhatsApp admin (sementara placeholder)
 - [ ] Pilihan font final
 - [ ] Konten awal: deskripsi layanan, foto contoh, data tim
-- [ ] Domain website
+- [ ] Domain website (ganti `NEXT_PUBLIC_SITE_URL` sebelum deploy)
 
 ## 13. Rencana Kerja
 
 1. [x] Finalisasi skema database (SQL Supabase + RLS): `supabase/migrations/0001_init.sql`, `supabase/seed.sql`
 2. [x] Inisialisasi proyek Next.js + Tailwind, tema warna dan font (Fraunces + Plus Jakarta Sans)
-3. [ ] Halaman publik: beranda, katalog, tim, form order + redirect WA
-4. [ ] Tracking order dan testimoni
-5. [ ] Dashboard admin (CRUD + progres)
-6. [ ] Notifikasi email ke admin
-7. [ ] Halaman legal, pengujian, deploy ke Vercel
+3. [x] Halaman publik: beranda, katalog, tim, form order + redirect WA (halaman `/lacak` masih placeholder, dikerjakan di langkah 4)
+4. [x] Tracking order dan testimoni (`/lacak`, rate limiting di form order, lacak, dan testimoni; limiter masih in-memory, upgrade ke Upstash/Supabase sebelum trafik besar)
+5. [x] Dashboard admin (CRUD + progres): login, order, layanan, kategori, tim, testimoni, pengaturan WA/email di `/adalahpokoknya`
+6. [x] Notifikasi email ke admin via Resend (best-effort dengan `after()`; penerima utama dari `site_settings.admin_notification_email`, fallback `ADMIN_NOTIFICATION_EMAIL`; lihat README.md)
+7. [x] Halaman Tentang, Syarat & Ketentuan, Kebijakan Privasi, canonical metadata, sitemap, audit dependency; deploy ke Vercel masih menunggu domain dan konfigurasi production
